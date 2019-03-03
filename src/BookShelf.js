@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
 import Book from './Book';
-// import BookItem from './BookItem';
 
 const styles = {
   bookList: {
@@ -18,29 +17,29 @@ const styles = {
   },
 };
 
-const BookList = props => {
+const BookShelf = props => {
   const { classes, searchStatus, bookItems } = props;
-  const bookCards = bookItems.map(book => {
+  const bookSearchResults = bookItems.map(book => {
     const { id } = book;
-    const { title, subtitle, authors, publisher, publishedDate, pageCount, previewLink, description } = book.volumeInfo;
+    const { title, authors, publisher, pageCount, previewLink } = book.volumeInfo;
     const { smallThumbnail } = book.volumeInfo.imageLinks;
-    console.log(book.volumeInfo);
-    return <Book title={title} authors={authors} publisher={publisher} thumbnail={smallThumbnail} key={id} />;
+    return (
+      <Book
+        title={title}
+        authors={authors}
+        publisher={publisher}
+        pageCount={pageCount}
+        previewLink={previewLink}
+        thumbnail={smallThumbnail}
+        key={id}
+      />
+    );
   });
-  return (
-    <div className={classes.bookList}>
-      {/* <p className={classes.noBooksMessage}>{searchStatus}</p>
-      {bookItems.map(book => {
-        return console.log(book.selfLink);
-      })} */}
-      {bookCards}
-    </div>
-  );
+  return <div className={classes.bookList}>{bookItems.length ? bookSearchResults : <p>{searchStatus}</p>}</div>;
 };
-BookList.propTypes = {
-  classes: PropTypes.shape({
-    bookList: PropTypes.string.isRequired,
-    noBooksMessage: PropTypes.string.isRequired,
-  }).isRequired,
+BookShelf.propTypes = {
+  classes: PropTypes.objectOf(PropTypes.string).isRequired,
+  searchStatus: PropTypes.string.isRequired,
+  bookItems: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
-export default withStyles(styles)(BookList);
+export default withStyles(styles)(BookShelf);
