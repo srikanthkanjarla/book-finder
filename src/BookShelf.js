@@ -22,7 +22,7 @@ const BookShelf = props => {
   const bookSearchResults = bookItems.map(book => {
     const { id } = book;
     const { title, authors, publisher, pageCount, previewLink } = book.volumeInfo;
-    const { smallThumbnail } = book.volumeInfo.imageLinks;
+    const { smallThumbnail } = book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks : '';
     return (
       <Book
         title={title}

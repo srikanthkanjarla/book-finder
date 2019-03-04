@@ -25,10 +25,9 @@ const styles = {
     flex: 2,
   },
 };
-// img src,
 const Book = props => {
   const { classes, thumbnail, title, authors, publisher, pageCount, previewLink } = props;
-  const author = authors.map(person => person);
+  const author = authors ? authors.map(person => person) : '';
   return (
     <Card className={classes.card}>
       <CardMedia image={thumbnail} title="book cover" className={classes.cover} />
@@ -55,14 +54,19 @@ const Book = props => {
 };
 Book.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string.isRequired).isRequired,
-  authors: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  authors: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string.isRequired)]),
   publisher: PropTypes.string,
-  pageCount: PropTypes.number.isRequired,
-  title: PropTypes.string.isRequired,
-  previewLink: PropTypes.string.isRequired,
-  thumbnail: PropTypes.string.isRequired,
+  pageCount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  title: PropTypes.string,
+  previewLink: PropTypes.string,
+  thumbnail: PropTypes.string,
 };
 Book.defaultProps = {
+  authors: '',
   publisher: '',
+  pageCount: '',
+  title: '',
+  previewLink: '',
+  thumbnail: '',
 };
 export default withStyles(styles)(Book);
