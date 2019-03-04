@@ -10,7 +10,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       searchQuery: '',
-      bookItems: [], // array of 10 book items
+      bookItems: [], // array of book results
       bookSearchStatus: 'Nothing Here Yet - Try Searching For A Book!',
     };
   }
@@ -27,12 +27,13 @@ class App extends React.Component {
     const { searchQuery } = this.state;
     event.preventDefault();
     if (searchQuery.trim() === '') {
-      return null;
+      return;
     }
+    // fecth book results for user query from Google books API
     fetch(`https://www.googleapis.com/books/v1/volumes?q=${searchQuery}&maxResults=15&key=${key}`)
       .then(response => {
         if (!response.ok) {
-          throw Error('Bad response for flag request!'); // This will implicitly reject
+          throw Error('Oops something went wrong! Try again');
         }
         return response.json();
       })
@@ -43,7 +44,6 @@ class App extends React.Component {
         });
       })
       .catch(() => this.setState({ searchQuery: 'Something went wrong, Try again' }));
-    return true;
   };
 
   render() {
